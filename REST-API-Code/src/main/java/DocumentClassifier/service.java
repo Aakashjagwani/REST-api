@@ -1,5 +1,6 @@
 package DocumentClassifier;
 
 public interface service {
-	public void save(Model m);
+    //There was something but we changed our mind.The file contents were deleted.
+
 }

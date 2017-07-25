@@ -1,28 +1,7 @@
 package DocumentClassifier;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Path {
+    //There was something but we changed our mind.The file contents were deleted.
 
-    private String ModelPath;
-
-    public Path() {
-    }
-
-    public String getModelPath() {
-        return ModelPath;
-    }
-
-    public void setModelPath(String ModelPath1) {
-        this.ModelPath = ModelPath1;
-    }
-
-    
-    @Override
-    public String toString() {
-        return "ModelPath{" +
-                "ModelPath='" + ModelPath+ '\'' +
-                '}';
-    }
 }

@@ -5,7 +5,8 @@
 <body>
     <div>
         <div>
-             Click on this <strong><a href="Aya">link</a></strong> For File Path.
+             <a href="/train"><h3>Train</h3></a>
+		     <a href="/test"><h3>Test</h3></a>
         </div>
     </div>
 </body>
