@@ -34,6 +34,11 @@ public class KhaliController {
 	@Autowired
 	RestTemplate restTemplate;
 
+	String lastsplit(String data,String spliter){
+		if(data==null)return data;
+		String[] spl=data.split(spliter);
+		return spl[spl.length-1];
+	}
 	
 	@GetMapping("/train")
 	public ModelAndView trainreq(){
@@ -57,7 +62,7 @@ public class KhaliController {
 	
 		try {
 			InputStream myStream = new FileInputStream(new File(model));
-			response.addHeader("Content-disposition", "attachment;filename="+model.substring(model.lastIndexOf('/') + 1));
+			response.addHeader("Content-disposition", "attachment;filename="+lastsplit(model,"/"));
 			response.setContentType("txt/plain");
 			
 			IOUtils.copy(myStream, response.getOutputStream());
@@ -81,7 +86,9 @@ public class KhaliController {
 
 	@GetMapping("/test")
 	public ModelAndView testform(HttpSession sess,ModelAndView mod){
-		sess.setAttribute("sessionmodel",((String) sess.getAttribute("model")).substring(((String) sess.getAttribute("model")).lastIndexOf("/"))+1);
+		String sessmod=(String) sess.getAttribute("model");
+		System.out.println(sessmod);
+		sess.setAttribute("sessionmodel",lastsplit(lastsplit(sessmod,"/"),"\\"));
 		return new ModelAndView("tests");
 	}
 	
