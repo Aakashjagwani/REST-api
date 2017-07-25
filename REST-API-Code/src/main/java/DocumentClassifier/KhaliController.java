@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 public class KhaliController {
@@ -36,7 +36,9 @@ public class KhaliController {
 
 	String lastsplit(String data,String spliter){
 		if(data==null)return data;
-		String[] spl=data.split(spliter);
+		String[] spl;
+		try{spl=data.split(spliter);}
+		catch(PatternSyntaxException e){return data;}
 		return spl[spl.length-1];
 	}
 	
