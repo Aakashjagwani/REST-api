@@ -81,7 +81,7 @@ public class KhaliController {
 
 	@GetMapping("/test")
 	public ModelAndView testform(HttpSession sess,ModelAndView mod){
-		sess.setAttribute("sessionmodel", sess.getAttribute("model"));
+		sess.setAttribute("sessionmodel",((String) sess.getAttribute("model")).substring(((String) sess.getAttribute("model")).lastIndexOf("/"))+1);
 		return new ModelAndView("tests");
 	}
 	
