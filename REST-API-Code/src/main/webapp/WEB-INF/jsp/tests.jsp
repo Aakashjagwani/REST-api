@@ -79,7 +79,8 @@ $.ajax({
 
 </head>
 <body>
-<a href="/train"><h3>TRAIN</h3></a>
+<a href="/train"><h3>Train</h3></a>
+<a href="/test"><h3>Test</h3></a>
 <br>
 <form id="testform" method="POST" enctype="multipart/form-data" action="">
 			<table>

@@ -161,6 +161,7 @@ input::-moz-focus-outer {
 <title>Train</title>
 </head>
 <body>
+<a href="/train"><h3>Train</h3></a>
 <a href="/test"><h3>Test</h3></a>
 <br>
 		Enter Ratio For Training
