@@ -1,4 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<!--
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+--><%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -77,6 +83,15 @@ $.ajax({
         success: function (data) {
             $("#result")[0].innerHTML=data;
             $("#result").addClass("show").removeClass("hide");
+            $("#error").removeClass("show").addClass("hide");
+            
+        },
+        error:function(jqXHR){
+        	if(jqXHR.status==400){
+        		 $("#error")[0].innerHTML=jqXHR.responseText;
+                 $("#error").addClass("show").removeClass("hide");
+                 $("#result").removeClass("show").addClass("hide");
+        	}
         },
         cache: false,
         contentType: false,
@@ -188,5 +203,14 @@ $.ajax({
 <div class="container">
 <div id="result" class="hide"></div>
 </div>
+<div class="container">
+<div id="error" class="hide"></div>
+</div>
 </body>
-</html>
+</html><!--
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+-->

@@ -1,3 +1,11 @@
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/
+
 package DocumentClassifier;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,3 +27,10 @@ public class controller {
 	    
 
 	}
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/

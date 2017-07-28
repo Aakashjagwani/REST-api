@@ -1,3 +1,10 @@
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/
 package DocumentClassifier;
 
 public class TestResult {
@@ -29,3 +36,10 @@ public TestResult() {
 }
 
 }
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/

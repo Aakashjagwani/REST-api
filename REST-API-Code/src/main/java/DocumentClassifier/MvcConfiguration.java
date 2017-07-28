@@ -1,3 +1,10 @@
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/
 package DocumentClassifier;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -20,6 +27,18 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter{
 	        resolver.setSuffix(".jsp");
 	        resolver.setViewClass(JstlView.class);
 	        registry.viewResolver(resolver);
+	        
+	        
+	        
+	        
+	        
 	    }
 	}
 
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/

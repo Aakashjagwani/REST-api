@@ -1,3 +1,10 @@
+<!--
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+-->
 <!-- Never used -->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -50,3 +57,10 @@
 	</script>
 </body>
 </html>
+<!--
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+-->

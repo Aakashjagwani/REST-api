@@ -1,4 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<!--
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+--><%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -89,7 +95,7 @@ $range-label-width: 60px !default;
 }
 
 .range-slider__range {
-  -webkit-appearance: none;
+/*   -webkit-appearance: none; */
   width: calc(100% - (<%="#"%>{$range-label-width + 13px}));
   height: $range-track-height;
   border-radius: 5px;
@@ -271,4 +277,10 @@ input::-moz-focus-outer {
 		});
 </script>
 
-</body></html>
+</body></html><!--
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+-->

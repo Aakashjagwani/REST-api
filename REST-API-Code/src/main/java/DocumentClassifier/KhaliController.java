@@ -1,3 +1,10 @@
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/
 package DocumentClassifier;
 
 import java.io.File;
@@ -18,8 +25,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,10 +40,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@PropertySource("classpath:application.properties")
 public class KhaliController {
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	@Autowired
+	Environment env;
 
 	String lastsplit(String data,String spliter){
 		if(data==null)return data;
@@ -45,23 +60,25 @@ public class KhaliController {
 	@GetMapping("/train")
 	public ModelAndView trainreq(){
 		return new ModelAndView("train");
+		
 	}
 	@PostMapping("/train")
 	public String trainpost(@RequestParam(value="train_ratio") int tri,HttpSession sess){
 		//call aman
 		float tr=((float)(tri))/100.0f;
-    	Model resp = restTemplate.getForObject("http://127.0.0.1:5000/document-classifier/api/v1/train?train_ratio="+tr, Model.class);
+    	Model resp = restTemplate.getForObject(env.getProperty("sirflocal")+"/document-classifier/api/v1/train?train_ratio="+tr, Model.class);
 		String downloadableModelFilePath=resp.getModelStoredAt();//from aman api
 		//TODO: make path rel. (user shouldnt see whole path)
 		if (downloadableModelFilePath=="") return "Train req. failed";
 		sess.setAttribute("model", downloadableModelFilePath);
 		return "success="+downloadableModelFilePath;
+		
 	}
 	
 	@GetMapping("/download")
 	public void downloadModel(HttpServletRequest request, HttpServletResponse response){
 		String model=request.getParameter("model");
-	
+		model=env.getProperty("modelbasepath")+model;
 		try {
 			InputStream myStream = new FileInputStream(new File(model));
 			response.addHeader("Content-disposition", "attachment;filename="+lastsplit(model,"/"));
@@ -106,8 +123,8 @@ public class KhaliController {
 				Files.write(path, bytes);
 				return 1;
 	   }
-	   private void unZipIt(String zipFile, String outputFolder){
-
+	   private int unZipIt(String zipFile, String outputFolder){
+		   int z= 1;
 		     byte[] buffer = new byte[1024];
 
 		     try{
@@ -127,7 +144,12 @@ public class KhaliController {
 		    	while(ze!=null){
 
 		    	   String fileName = ze.getName();
-		           File newFile = new File(outputFolder + File.separator + fileName);
+		           if(!fileName.endsWith(".txt")) {
+		        	   z=0; break;
+		        	   
+		           }
+		           
+		    	   File newFile = new File(outputFolder + File.separator + fileName);
 
 		           System.out.println("file unzip : "+ newFile.getAbsoluteFile());
 
@@ -144,8 +166,9 @@ public class KhaliController {
 
 		            fos.close();
 		            ze = zis.getNextEntry();
+		            
 		    	}
-
+		    	
 		        zis.closeEntry();
 		    	zis.close();
 
@@ -153,43 +176,65 @@ public class KhaliController {
 
 		    }catch(IOException ex){
 		    	System.out.println("Unzipping failed:");
+		    	
 		       ex.printStackTrace();
+		       return -1;
 		    }
+		     return z;
 		   }
 	@PostMapping("/test")
-	public ModelAndView testreq(HttpSession sess,ModelAndView mod,
+	public ModelAndView testreq(HttpSession sess,ModelAndView mod,HttpServletResponse response,
 			@RequestParam("test_file") MultipartFile t_file,
 			@RequestParam("model_file") MultipartFile m_file,
 			@RequestParam("model_sess_path_flag") int flag){
 //		String log="t_file:"+t_file+" m_file:"+m_file+" s_flag:"+flag;
 //		System.out.println(log);
 //		for(long i=0;i<5000000000L;i++);
-		
+		int notxt=0;
 		//save given files and pass its path
 		long rnd=System.currentTimeMillis();
-		String basepath="C:/Users/aakash.jagwani/Desktop/restapifiles/";
+		String basepath=env.getProperty("basepath");
 		String tname=""+rnd+"-"+t_file.getOriginalFilename();
 //		System.out.println(tname);
 		int tnspli=tname.lastIndexOf('.');
 //		System.out.println(tnspli);
 		String tnspl=tname.substring(tnspli+1);
-//		System.out.println(tnspl);
+		System.out.println(tnspl);
 		String tdname=basepath+"/testfiles"+rnd+"/";
 		String tfname;
 		if(tnspl.equals("zip"))	tfname=basepath+tname;
-		else	tfname=tdname+tname;
+		else tfname=tdname+tname;
+		if(!tnspl.equals("txt") && !tnspl.equals("zip")) 	notxt=1; 
 //		System.out.println(tfname);
-		String mfname=basepath+"/modelfile"+rnd+"-"+m_file.getOriginalFilename();
+		String mfname=basepath+"modelfile"+rnd+"-"+m_file.getOriginalFilename();
 		try {
 			int x=saveUploadedFile(t_file, tfname),y=1;
-			if(flag==1)mfname=(String) sess.getAttribute("model");
+			if(flag==1)mfname=env.getProperty("modelbasepath")+(String) sess.getAttribute("model");
 			else y=saveUploadedFile(m_file, mfname);
 			if(x+y!=2 || mfname==null){ 
+//				System.out.println(""+x+"mfnae"+y);
+//				System.out.println(tfname);
+				response.setStatus(400);
 				sess.setAttribute("msg","Empty file(s) given");
-				return new ModelAndView("erroralert");} //case not all files were givn
+				return new ModelAndView("erroralert");
+				
+			} //case not all files were givn
+			if(notxt==1){	
+			response.setStatus(400);
+			sess.setAttribute("msg","Only .txt and .zip files are allowed.");
+			return new ModelAndView("erroralert");
+		}
 			if(tnspl.equals("zip")){
-			//extract zip (path=tfname) to dir (tdname)
-			unZipIt(tfname,tdname);
+			//	extract zip (path=tfname) to dir (tdname)
+				int z = unZipIt(tfname,tdname);
+				String msg=null;
+				if(z==-1) msg="Unzipping failed.";
+				else if(z== 0) msg="ZIP file should contain .txt files only.";
+				if (msg!=null){
+					response.setStatus(400);
+					sess.setAttribute("msg",msg);
+				return new ModelAndView("erroralert");
+				} //case not all files were givn
 			}
 
 		} catch (Exception e) {
@@ -201,7 +246,7 @@ public class KhaliController {
 //		if(tname.substring(tname.lastIndexOf('.') + 1)=="zip")	{
 		
 		
-		String apiurl="http://127.0.0.1:5000/document-classifier/api/v1/test?test_document_path="+tdname+"&"+"saved_model_path="+mfname;
+		String apiurl=env.getProperty("sirflocal")+"/document-classifier/api/v1/test?test_document_path="+tdname+"&"+"saved_model_path="+mfname;
 		//call aman api and get table data
 		List<TestResult> trs=Arrays.asList(restTemplate.getForObject(apiurl, TestResult[].class));
 				/*exchange(apiurl,
@@ -216,3 +261,10 @@ public class KhaliController {
 	}
 
 }
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/

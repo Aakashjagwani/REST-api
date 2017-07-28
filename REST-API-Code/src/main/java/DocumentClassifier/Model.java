@@ -1,3 +1,11 @@
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/
+
 package DocumentClassifier;
 
 public class Model {
@@ -22,3 +30,10 @@ public void setModelStoredAt(String modelStoredAt) {
 	}
 	
 }
+/** 
+Developed by:
+[Code Authors]
+Mihir Parikh
+Aakash Jagwani
+Aman Goyal
+**/
