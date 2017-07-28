@@ -3,9 +3,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="viewport" content="width=device-width, 
+initial-scale=1, maximum-scale=1, user-scalable=no">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-waitingfor/1.2.4/bootstrap-waitingfor.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
 <script>
 var rangeSlider = function(){
 	  var slider = $('.range-slider'),
@@ -161,23 +175,67 @@ input::-moz-focus-outer {
 <title>Train</title>
 </head>
 <body>
-<a href="/train"><h3>Train</h3></a>
-<a href="/test"><h3>Test</h3></a>
-<br>
+<nav class="navbar navbar-inverse container-fluid navbar-fixed-top">
+        <div>
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" 
+                data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" 
+                aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" 
+
+                href="/">Document Classifier</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/train">
+                    <span class="glyphicon glyphicon-home"></span> 
+                    Train</a></li>
+                    <li><a href="/test">
+                    <span class="glyphicon glyphicon-king"></span>  
+                    Test</a></li>
+ 
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+		<!-- MAIN -->
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h2 class="panel-title">Training</h2>
+    </div>
+    <div class="panel-body">
+	<div class="col-xs-4">
 		Enter Ratio For Training
-		<div class="range-slider">
-		<input class="range-slider__range" type="range" min="1" max="100" value="0"name="train_ratio" id="train_ratio">
-		<span class="range-slider__value">0</span>
+	    <div class="range-slider">
+		<input class="range-slider__range" min="1" max="100" value="50" name="train_ratio" id="train_ratio" type="range">
+		<div class="range-slider__value">0</div>
 		</div>
-		<br>
-		<br>
-		<button id="train">Submit</button>
-		<div id="wait"
-			style="display: none; width: 69px; height: 89px; border: 1px solid black; position: absolute; top: 50%; left: 50%; padding: 2px;">
-			<img src='http://i.imgur.com/8YsAmq3.gif' />
-		</div>
-		<button id="download" >Download</button>
-		<script type="text/javascript">
+	</div>
+    </div>
+
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-xs-1">
+                <p><button class="btn btn-success btn-default" id="train">Submit</button></p>
+            </div>
+            <div class="col-xs-1">
+                <button class="btn btn-success btn-default" id="download" style="display: none;">Download</button> 
+            </div>
+        </div>
+    </div>
+ 
+</div>
+
+
+<script type="text/javascript">
 		function sendoneCall() {
 			//show loading
 			$.post("",{train_ratio:$("#train_ratio")[0].value}).then(function(data) {
@@ -196,21 +254,21 @@ input::-moz-focus-outer {
 			$("#download").css("display", "none");
 
 			$(document).ajaxStart(function() {
-				console.log("Ajax call started");
-
-				$("#wait").css("display", "block");
+				//console.log("Ajax call started");
+				//$("#wait").css("display", "block");	
+				waitingDialog.show('Please wait!');
 			});
 			$(document).ajaxComplete(function() {
-				console.log("Ajax call completed");
-				$("#wait").css("display", "none");
+				//console.log("Ajax call completed");
+				//$("#wait").css("display", "none");
+				waitingDialog.hide();
 			});
 			$("#train").click(function() {
-				console.log("Training called...");
+				//console.log("Training called...");
 				$("#download").css("display", "none");
 				sendoneCall();
 			});
 		});
-	</script>
-		
-</body>
-</html>
+</script>
+
+</body></html>
